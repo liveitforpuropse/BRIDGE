@@ -971,10 +971,14 @@
         observer.disconnect();
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.1 });
 
   const heroSection = document.querySelector('#impact');
   if (heroSection) observer.observe(heroSection);
+  else {
+    animateCount(document.getElementById('heroStudents'), 133);
+    animateCount(document.getElementById('totalStudents'), 133);
+  }
 
   // Smooth close nav on outside click
   document.addEventListener('click', function(e) {
