@@ -1329,19 +1329,17 @@
     const receipt   = document.getElementById('t_receipt').value;
     const status    = document.getElementById('t_status').value;
 
+    const contributors_list = [];
     const rows = document.querySelectorAll('#contributorRows .contributor-row');
-    let contribLines = '';
-    let num = 1;
     rows.forEach(row => {
       const name = row.querySelectorAll('input')[0].value.trim();
-      const amt  = row.querySelectorAll('input')[1].value.trim();
-      if (name || amt) {
-        contribLines += `${num}. ${name || '—'} — ₹${amt || '0'} | `;
-        num++;
+      const amount = row.querySelectorAll('input')[1].value.trim();
+      if (name || amount) {
+        contributors_list.push({ name: name || '—', amount: amount || '0' });
       }
     });
 
-    const payload = { psrb, student, requestor, approver, total, form, receipt, status, contributors: contribLines || 'None' };
+    const payload = { psrb, student, requestor, approver, total, form, receipt, status, contributors_list };
 
     const btn = e.target.querySelector('button[type=submit]');
     btn.disabled = true;
