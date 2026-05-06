@@ -693,9 +693,12 @@
         <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background:var(--sage-bg)">
           <i class="fas fa-check text-2xl" style="color:var(--sage)"></i>
         </div>
-        <h3 class="font-bold text-gray-700 text-xl mb-2">Application Received!</h3>
-        <p class="text-gray-400 text-sm max-w-sm mx-auto">Our core team will review your application and get back to you via WhatsApp within 2–3 days. Please keep your documents ready.</p>
-        <button onclick="resetForm()" class="mt-6 px-6 py-2 rounded-full text-sm transition" style="border:1px solid var(--sage);color:var(--sage)">Submit Another</button>
+        <h3 class="font-bold text-gray-700 text-xl mb-2">Application Submitted!</h3>
+        <p class="text-gray-400 text-sm max-w-sm mx-auto">Your application has been sent to the Bridge core team. They will review it and reach out to you within 2–3 days.</p>
+        <div class="mt-4 rounded-xl px-5 py-3 inline-block text-sm border" style="background:var(--sage-bg);border-color:#c8dece;color:var(--sage)">
+          <i class="fab fa-whatsapp mr-2"></i>Core team will contact you on: <strong id="applicantPhone"></strong>
+        </div>
+        <button onclick="resetForm()" class="mt-6 block mx-auto px-6 py-2 rounded-full text-sm transition" style="border:1px solid var(--sage);color:var(--sage)">Submit Another</button>
       </div>
     </div>
   </div>
@@ -1279,11 +1282,14 @@
       `*Course/Class:* ${course}\n` +
       `*Institution:* ${school}\n` +
       `*Fee Required:* ₹${amount}\n\n` +
-      `*Story:*\n${story}`;
+      `*Story:*\n${story}\n\n` +
+      `_Please reply to the applicant directly on WhatsApp: ${phone}_`;
 
-    const url = `https://wa.me/919591888775?text=${encodeURIComponent(msg)}`;
+    const url = `https://chat.whatsapp.com/L8iLWnJ8k5CH7eb3q8fGH5`;
     window.open(url, '_blank');
 
+    // Show phone number on success screen so core team knows who to contact
+    document.getElementById('applicantPhone').textContent = phone;
     document.getElementById('applicationForm').classList.add('hidden');
     document.getElementById('successMsg').classList.remove('hidden');
   }
