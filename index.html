@@ -102,6 +102,7 @@
         <a href="#impact" class="nav-link">Our Impact</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
         <a href="#guidelines" class="nav-link">Guidelines</a>
+        <a href="#tracker" class="nav-link">Case Tracker</a>
         <a href="#students" class="nav-link">Students</a>
         <a href="#team" class="nav-link">Core Team</a>
         <a href="#apply" class="nav-link px-4 py-2 text-white rounded-full transition btn-sage">Apply for Support</a>
@@ -700,6 +701,142 @@
   </div>
 </section>
 
+<!-- ===================== CONTRIBUTION TRACKER ===================== -->
+<section id="tracker" class="py-20" style="background:linear-gradient(135deg,var(--sky-bg) 0%,var(--lav-bg) 100%)">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <span class="text-sm font-semibold uppercase tracking-widest" style="color:var(--sky)">Core Team Only</span>
+      <h2 class="playfair text-4xl font-bold mt-2" style="color:var(--heading)">Case Contribution Tracker</h2>
+      <hr class="section-divider mt-4 w-24 mx-auto"/>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto">Record the full details of a closed PSRB case — approver, contributors, amounts, and fee receipt status. Submits directly to the Bridge core WhatsApp.</p>
+    </div>
+
+    <div class="rounded-3xl p-8 border shadow-sm" style="background:#fafdff;border-color:var(--sky-bg)">
+      <form id="trackerForm" onsubmit="submitTracker(event)" class="space-y-6">
+
+        <!-- Case Details -->
+        <div class="rounded-2xl p-5 border" style="background:var(--sky-bg);border-color:#c2dced">
+          <div class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:var(--sky)">Case Details</div>
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">PSRB ID *</label>
+              <input id="t_psrb" type="text" required placeholder="e.g. PSRB-2026-01" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">Student Name *</label>
+              <input id="t_student" type="text" required placeholder="Student's full name" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">Requestor Name *</label>
+              <input id="t_requestor" type="text" required placeholder="Who submitted this case" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">Core Member Approver *</label>
+              <select id="t_approver" required class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced">
+                <option value="">Select approver</option>
+                <option>Rajani</option>
+                <option>Indu</option>
+                <option>Shashi</option>
+                <option>Niveda</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">Total Fee Amount (₹) *</label>
+              <input id="t_total" type="number" required min="100" placeholder="Total amount collected" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">Bridge Form Uploaded?</label>
+              <select id="t_form" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Pending">Pending</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">Fee Receipt Received?</label>
+              <select id="t_receipt" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Pending">Pending</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">Case Status</label>
+              <select id="t_status" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced">
+                <option value="Closed">Closed</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Pending Fee Payment">Pending Fee Payment</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contributor Table -->
+        <div class="rounded-2xl p-5 border" style="background:white;border-color:var(--sky-bg)">
+          <div class="flex items-center justify-between mb-4">
+            <div class="text-xs font-semibold uppercase tracking-widest" style="color:var(--sky)">Contributor List</div>
+            <button type="button" onclick="addContributorRow()" class="text-xs px-3 py-1.5 rounded-lg text-white font-medium transition" style="background:var(--sky)">
+              <i class="fas fa-plus mr-1"></i>Add Row
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm" id="contributorTable">
+              <thead>
+                <tr style="border-bottom:2px solid var(--sky-bg)">
+                  <th class="text-left py-2 px-2 text-xs font-semibold text-gray-500 w-8">#</th>
+                  <th class="text-left py-2 px-2 text-xs font-semibold text-gray-500">Contributor Name</th>
+                  <th class="text-left py-2 px-2 text-xs font-semibold text-gray-500 w-36">Amount (₹)</th>
+                  <th class="py-2 px-2 w-8"></th>
+                </tr>
+              </thead>
+              <tbody id="contributorRows">
+                <tr class="contributor-row">
+                  <td class="py-1.5 px-2 text-gray-400 text-xs row-num">1</td>
+                  <td class="py-1.5 px-2"><input type="text" placeholder="Name" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4"/></td>
+                  <td class="py-1.5 px-2"><input type="number" placeholder="₹0" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4" oninput="updateTotal()"/></td>
+                  <td class="py-1.5 px-2"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition"><i class="fas fa-times"></i></button></td>
+                </tr>
+                <tr class="contributor-row">
+                  <td class="py-1.5 px-2 text-gray-400 text-xs row-num">2</td>
+                  <td class="py-1.5 px-2"><input type="text" placeholder="Name" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4"/></td>
+                  <td class="py-1.5 px-2"><input type="number" placeholder="₹0" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4" oninput="updateTotal()"/></td>
+                  <td class="py-1.5 px-2"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition"><i class="fas fa-times"></i></button></td>
+                </tr>
+                <tr class="contributor-row">
+                  <td class="py-1.5 px-2 text-gray-400 text-xs row-num">3</td>
+                  <td class="py-1.5 px-2"><input type="text" placeholder="Name" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4"/></td>
+                  <td class="py-1.5 px-2"><input type="number" placeholder="₹0" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4" oninput="updateTotal()"/></td>
+                  <td class="py-1.5 px-2"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition"><i class="fas fa-times"></i></button></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr style="border-top:2px solid var(--sky-bg)">
+                  <td colspan="2" class="py-2 px-2 text-sm font-semibold text-gray-600 text-right">Total Contributed:</td>
+                  <td class="py-2 px-2 font-bold text-sm" style="color:var(--sky)" id="contributedTotal">₹0</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 text-white font-semibold rounded-xl transition shadow-sm text-sm" style="background:var(--sky)">
+          <i class="fab fa-whatsapp mr-2"></i>Send Summary to Bridge WhatsApp
+        </button>
+      </form>
+
+      <div id="trackerSuccess" class="hidden text-center py-10">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background:var(--sky-bg)">
+          <i class="fas fa-check text-2xl" style="color:var(--sky)"></i>
+        </div>
+        <h3 class="font-bold text-gray-700 text-xl mb-2">Summary Sent!</h3>
+        <p class="text-gray-400 text-sm max-w-sm mx-auto">The contribution summary has been sent to the Bridge core WhatsApp group.</p>
+        <button onclick="resetTracker()" class="mt-6 px-6 py-2 rounded-full text-sm transition" style="border:1px solid var(--sky);color:var(--sky)">Record Another Case</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== TEAM ===================== -->
 <section id="team" class="py-20" style="background:linear-gradient(135deg,#fdfcfb 0%,var(--peach-bg) 100%)">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1146,6 +1283,92 @@
     document.getElementById('applicationForm').classList.remove('hidden');
     document.getElementById('successMsg').classList.add('hidden');
     document.getElementById('applicationForm').reset();
+  }
+
+  // ── Contribution Tracker ────────────────────────────────
+  let rowCount = 3;
+
+  function addContributorRow() {
+    rowCount++;
+    const tbody = document.getElementById('contributorRows');
+    const tr = document.createElement('tr');
+    tr.className = 'contributor-row';
+    tr.innerHTML = `
+      <td class="py-1.5 px-2 text-gray-400 text-xs row-num">${rowCount}</td>
+      <td class="py-1.5 px-2"><input type="text" placeholder="Name" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4"/></td>
+      <td class="py-1.5 px-2"><input type="number" placeholder="₹0" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4" oninput="updateTotal()"/></td>
+      <td class="py-1.5 px-2"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition"><i class="fas fa-times"></i></button></td>`;
+    tbody.appendChild(tr);
+  }
+
+  function removeRow(btn) {
+    const rows = document.querySelectorAll('#contributorRows .contributor-row');
+    if (rows.length > 1) {
+      btn.closest('tr').remove();
+      document.querySelectorAll('#contributorRows .row-num').forEach((el, i) => el.textContent = i + 1);
+      rowCount = document.querySelectorAll('#contributorRows .contributor-row').length;
+      updateTotal();
+    }
+  }
+
+  function updateTotal() {
+    const amounts = document.querySelectorAll('#contributorRows input[type=number]');
+    let sum = 0;
+    amounts.forEach(i => { sum += parseFloat(i.value) || 0; });
+    document.getElementById('contributedTotal').textContent = '₹' + sum.toLocaleString('en-IN');
+  }
+
+  function submitTracker(e) {
+    e.preventDefault();
+    const psrb      = document.getElementById('t_psrb').value.trim();
+    const student   = document.getElementById('t_student').value.trim();
+    const requestor = document.getElementById('t_requestor').value.trim();
+    const approver  = document.getElementById('t_approver').value;
+    const total     = document.getElementById('t_total').value.trim();
+    const form      = document.getElementById('t_form').value;
+    const receipt   = document.getElementById('t_receipt').value;
+    const status    = document.getElementById('t_status').value;
+
+    const rows = document.querySelectorAll('#contributorRows .contributor-row');
+    let contribLines = '';
+    let num = 1;
+    rows.forEach(row => {
+      const name = row.querySelectorAll('input')[0].value.trim();
+      const amt  = row.querySelectorAll('input')[1].value.trim();
+      if (name || amt) {
+        contribLines += `  ${num}. ${name || '—'} — ₹${amt || '0'}\n`;
+        num++;
+      }
+    });
+
+    const msg =
+      `*Bridge Case Contribution Summary*\n\n` +
+      `*PSRB ID:* ${psrb}\n` +
+      `*Student:* ${student}\n` +
+      `*Requestor:* ${requestor}\n` +
+      `*Approver:* ${approver}\n` +
+      `*Total Fee Amount:* ₹${total}\n` +
+      `*Bridge Form Uploaded:* ${form}\n` +
+      `*Fee Receipt Received:* ${receipt}\n` +
+      `*Case Status:* ${status}\n\n` +
+      `*Contributors:*\n${contribLines || '  (none listed)\n'}`;
+
+    window.open(`https://wa.me/919591888775?text=${encodeURIComponent(msg)}`, '_blank');
+    document.getElementById('trackerForm').classList.add('hidden');
+    document.getElementById('trackerSuccess').classList.remove('hidden');
+  }
+
+  function resetTracker() {
+    document.getElementById('trackerForm').classList.remove('hidden');
+    document.getElementById('trackerSuccess').classList.add('hidden');
+    document.getElementById('trackerForm').reset();
+    document.getElementById('contributedTotal').textContent = '₹0';
+    const tbody = document.getElementById('contributorRows');
+    tbody.innerHTML = `
+      <tr class="contributor-row"><td class="py-1.5 px-2 text-gray-400 text-xs row-num">1</td><td class="py-1.5 px-2"><input type="text" placeholder="Name" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4"/></td><td class="py-1.5 px-2"><input type="number" placeholder="₹0" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4" oninput="updateTotal()"/></td><td class="py-1.5 px-2"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition"><i class="fas fa-times"></i></button></td></tr>
+      <tr class="contributor-row"><td class="py-1.5 px-2 text-gray-400 text-xs row-num">2</td><td class="py-1.5 px-2"><input type="text" placeholder="Name" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4"/></td><td class="py-1.5 px-2"><input type="number" placeholder="₹0" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4" oninput="updateTotal()"/></td><td class="py-1.5 px-2"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition"><i class="fas fa-times"></i></button></td></tr>
+      <tr class="contributor-row"><td class="py-1.5 px-2 text-gray-400 text-xs row-num">3</td><td class="py-1.5 px-2"><input type="text" placeholder="Name" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4"/></td><td class="py-1.5 px-2"><input type="number" placeholder="₹0" class="w-full px-3 py-1.5 rounded-lg border text-sm outline-none" style="border-color:#d4e8f4" oninput="updateTotal()"/></td><td class="py-1.5 px-2"><button type="button" onclick="removeRow(this)" class="text-gray-300 hover:text-red-400 transition"><i class="fas fa-times"></i></button></td></tr>`;
+    rowCount = 3;
   }
 
   // Filter student cards
