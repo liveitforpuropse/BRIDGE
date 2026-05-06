@@ -745,6 +745,14 @@
               <input id="t_total" type="number" required min="100" placeholder="Total amount collected" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced"/>
             </div>
             <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">School / College Name *</label>
+              <input id="t_institution" type="text" required placeholder="e.g. St. Mary's School, Anna University" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1 text-gray-600">Course / Class *</label>
+              <input id="t_course" type="text" required placeholder="e.g. Class 10, B.E. ECE Year 3" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced"/>
+            </div>
+            <div>
               <label class="block text-sm font-medium mb-1 text-gray-600">Bridge Form Uploaded?</label>
               <select id="t_form" class="w-full px-4 py-2.5 rounded-xl border outline-none text-sm transition" style="border-color:#c2dced">
                 <option value="Yes">Yes</option>
@@ -1324,10 +1332,12 @@
     const student   = document.getElementById('t_student').value.trim();
     const requestor = document.getElementById('t_requestor').value.trim();
     const approver  = document.getElementById('t_approver').value;
-    const total     = document.getElementById('t_total').value.trim();
-    const form      = document.getElementById('t_form').value;
-    const receipt   = document.getElementById('t_receipt').value;
-    const status    = document.getElementById('t_status').value;
+    const total       = document.getElementById('t_total').value.trim();
+    const institution = document.getElementById('t_institution').value.trim();
+    const course      = document.getElementById('t_course').value.trim();
+    const form        = document.getElementById('t_form').value;
+    const receipt     = document.getElementById('t_receipt').value;
+    const status      = document.getElementById('t_status').value;
 
     const contributors_list = [];
     const rows = document.querySelectorAll('#contributorRows .contributor-row');
@@ -1339,7 +1349,7 @@
       }
     });
 
-    const payload = { psrb, student, requestor, approver, total, form, receipt, status, contributors_list };
+    const payload = { psrb, student, requestor, approver, total, institution, course, form, receipt, status, contributors_list };
 
     const btn = e.target.querySelector('button[type=submit]');
     btn.disabled = true;
