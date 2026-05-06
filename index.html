@@ -821,7 +821,7 @@
         </div>
 
         <button type="submit" class="w-full py-3 text-white font-semibold rounded-xl transition shadow-sm text-sm" style="background:var(--sky)">
-          <i class="fab fa-whatsapp mr-2"></i>Send Summary to Bridge WhatsApp
+          <i class="fas fa-paper-plane mr-2"></i>Submit to Google Sheets
         </button>
       </form>
 
@@ -1336,26 +1336,30 @@
       const name = row.querySelectorAll('input')[0].value.trim();
       const amt  = row.querySelectorAll('input')[1].value.trim();
       if (name || amt) {
-        contribLines += `  ${num}. ${name || '—'} — ₹${amt || '0'}\n`;
+        contribLines += `${num}. ${name || '—'} — ₹${amt || '0'} | `;
         num++;
       }
     });
 
-    const msg =
-      `*Bridge Case Contribution Summary*\n\n` +
-      `*PSRB ID:* ${psrb}\n` +
-      `*Student:* ${student}\n` +
-      `*Requestor:* ${requestor}\n` +
-      `*Approver:* ${approver}\n` +
-      `*Total Fee Amount:* ₹${total}\n` +
-      `*Bridge Form Uploaded:* ${form}\n` +
-      `*Fee Receipt Received:* ${receipt}\n` +
-      `*Case Status:* ${status}\n\n` +
-      `*Contributors:*\n${contribLines || '  (none listed)\n'}`;
+    const payload = { psrb, student, requestor, approver, total, form, receipt, status, contributors: contribLines || 'None' };
 
-    window.open(`https://wa.me/919591888775?text=${encodeURIComponent(msg)}`, '_blank');
-    document.getElementById('trackerForm').classList.add('hidden');
-    document.getElementById('trackerSuccess').classList.remove('hidden');
+    const btn = e.target.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+
+    fetch('https://script.google.com/macros/s/AKfycbyAcBFbme3Tdr0eejhjBisgWcGCMUs_Zkpn7oiI-b55pKKRxUMQw_BJ353RH9-RhEBHbQ/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      document.getElementById('trackerForm').classList.add('hidden');
+      document.getElementById('trackerSuccess').classList.remove('hidden');
+    }).catch(() => {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Submit to Google Sheets';
+      alert('Something went wrong. Please try again.');
+    });
   }
 
   function resetTracker() {
